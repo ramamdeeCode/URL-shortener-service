@@ -1,7 +1,7 @@
 const urls = require("../data/urls-data");
 const uses = require("../data/uses-data");
 let lastUrlId = urls.reduce((maxId, url) => Math.max(maxId, url.id), 0);
-//function to track url
+//function to track urls
 const trackUrl = (url) => {
   const newUse = {
     id: uses.length + 1,
@@ -41,7 +41,15 @@ const create = (req, res) => {
   urls.push(newUrl);
   res.status(201).json({ data: newUrl });
 };
+// update urls
+const update = (req, res) => {
+  const url = res.locals.url;
+  const { data: { href } = {} } = req.body;
 
+  //update urls
+  url.href = href;
+  res.json({ data: url });
+};
 //read all urls
 const list = (req, res) => {
   res.json({ data: urls });
@@ -54,8 +62,19 @@ const read = (req, res) => {
   console.log(uses);
 };
 
+//delete url
+const destroy = (req, res) => {
+  const { urlId } = req.params;
+  const index = urls.findIndex((urlS) => urlS.id === Number(urlId));
+  const deletedUrls = urls.splice(index, 1);
+  res.sendStatus(204);
+};
+
 module.exports = {
   create: [checkProperty, create],
   read: [checkUrlExist, read],
+  update: [checkUrlExist, checkProperty, update, update],
+  delete: [checkUrlExist, destroy],
+  checkUrlExist,
   list,
 };

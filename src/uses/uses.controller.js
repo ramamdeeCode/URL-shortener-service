@@ -20,12 +20,22 @@ const checkUsesExist = (req, res, next) => {
     next({ status: 404, message: `Use id not found ${useId}` });
   }
 };
+
 //read single use
 const read = (req, res) => {
   res.json({ data: res.locals.use });
 };
 
+//delete use
+const destroy = (req, res) => {
+  const { useId } = req.params;
+  const index = uses.findIndex((use) => use.id === Number(useId));
+  const deletedUseId = uses.splice(index, 1);
+  res.sendStatus(204);
+};
+
 module.exports = {
   read: [checkUsesExist, read],
+  delete: [checkUsesExist, destroy],
   list,
 };

@@ -62,19 +62,10 @@ const read = (req, res) => {
   console.log(uses);
 };
 
-//delete url
-const destroy = (req, res) => {
-  const { urlId } = req.params;
-  const index = urls.findIndex((urlS) => urlS.id === Number(urlId));
-  const deletedUrls = urls.splice(index, 1);
-  res.sendStatus(204);
-};
-
 module.exports = {
   create: [checkProperty, create],
   read: [checkUrlExist, read],
   update: [checkUrlExist, checkProperty, update, update],
-  delete: [checkUrlExist, destroy],
   checkUrlExist,
   list,
 };

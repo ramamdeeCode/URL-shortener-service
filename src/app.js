@@ -12,7 +12,7 @@ app.use("/uses", usesrouter);
 
 //Not found errors
 app.use((req, res, next) => {
-  next(`Not found : ${req.originalUrls}`);
+  next({ status: 404, message: `Not found: ${req.originalUrl}` });
 });
 
 //error handler
